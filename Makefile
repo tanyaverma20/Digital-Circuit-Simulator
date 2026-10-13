@@ -1,5 +1,5 @@
 # Digital Circuit Simulator — C++17 EDA Simulation Engine
-# Maintainer: Tanya Verma (https://github.com/tanyaverma20/Digital-Circuit-Simulator)
+# Author & Maintainer: Tanya Verma (https://github.com/tanyaverma20/Digital-Circuit-Simulator)
 
 CXX ?= g++
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -O2 -I. -I./header_files

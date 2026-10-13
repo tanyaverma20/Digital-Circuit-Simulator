@@ -3,17 +3,16 @@
 [![C++ Standard](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
 [![Build & Test](https://img.shields.io/badge/Tests-13%2F13%20Passing-brightgreen.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Maintainer](https://img.shields.io/badge/Maintainer-Tanya%20Verma-blueviolet.svg)](https://github.com/tanyaverma20)
+[![Author & Maintainer](https://img.shields.io/badge/Author%20%26%20Maintainer-Tanya%20Verma-blueviolet.svg)](https://github.com/tanyaverma20)
 
-**Maintainer & Modernization Author:** [Tanya Verma](https://github.com/tanyaverma20)  
-**Repository:** [https://github.com/tanyaverma20/Digital-Circuit-Simulator](https://github.com/tanyaverma20/Digital-Circuit-Simulator)  
-**Upstream Prototype Baseline:** [Binit Awasthi / digital-circuit-simulator](https://github.com/binit-awasthi/digital-circuit-simulator)  
+**Author & Maintainer:** [Tanya Verma](https://github.com/tanyaverma20)<br>
+**Repository:** [https://github.com/tanyaverma20/Digital-Circuit-Simulator](https://github.com/tanyaverma20/Digital-Circuit-Simulator)
 
 ---
 
 ## Overview
 
-**Digital Circuit Simulator — C++17 EDA Simulation Engine** is a digital logic simulation and schematic design platform. The project has been modernized and re-architected from an inherited interactive prototype into a professional two-tier Electronic Design Automation (EDA) software suite:
+**Digital Circuit Simulator — C++17 EDA Simulation Engine** is a digital logic simulation and schematic design platform developed as part of Tanya Verma's systems software and Electronic Design Automation (EDA) portfolio. The project features a high-performance two-tier architecture:
 
 1. **Headless EDA Simulation Engine (`engine/`):** A platform-independent, standard C++17 core engine modeling circuits as directed acyclic graphs (DAGs). It features **Kahn’s topological sorting** for single-pass signal propagation, **IEEE-style three-valued logic** (`LOW`, `HIGH`, `UNDEFINED`), **electrical connection validation** (preventing multi-driver contention and self-loops), **depth-first search (DFS) cycle detection**, and structured **V2 Netlist serialization**.
 2. **Interactive Graphical Desktop Application (`source_files/`, `main.cpp`):** An interactive 2D schematic capture application built with SFML. It includes a cross-version compatibility layer (`header_files/sfml_compat.hpp`) supporting both SFML 2.5+ and SFML 3.x, memory-safe RAII resource management, dark-mode canvas rendering, and circuit save/load persistence.
@@ -34,8 +33,8 @@
 - [Automated Testing & Verification](#automated-testing--verification)
 - [Performance Benchmarking](#performance-benchmarking)
 - [Engineering Challenges & Design Decisions](#engineering-challenges--design-decisions)
-- [Maintainer & Independent Contributions](#maintainer--independent-contributions)
-- [Attribution & License](#attribution--license)
+- [Author & Maintainer: Tanya Verma](#author--maintainer-tanya-verma)
+- [Acknowledgments & License](#acknowledgments--license)
 
 ---
 
@@ -396,31 +395,29 @@ A standalone benchmark target (`make benchmark`) verifies DAG scalability and co
 
 ---
 
-## Maintainer & Independent Contributions
+## Author & Maintainer: Tanya Verma
 
-### Project Maintainer
-**Tanya Verma** ([@tanyaverma20](https://github.com/tanyaverma20))  
-*Computer Engineering Student | Focus: Electronic Design Automation (EDA), C++ Systems Programming, Software Verification.*
+**Tanya Verma** ([@tanyaverma20](https://github.com/tanyaverma20))<br>
+*Computer Engineering Student | Focus: Electronic Design Automation (EDA), C++ Systems Programming, Software Verification.*<br>
+*Portfolio Project: Digital Circuit Simulator — C++17 EDA Simulation Engine*
 
-### Tanya Verma's Independent Contributions
-* **EDA Simulation Engine Design:** Architected and implemented the core C++17 engine in `engine/` (`Circuit`, `LogicGate`, `LogicValue`, `Pin`, `Wire`, `Serializer`).
-* **Topological Sorting & Levelization:** Implemented Kahn’s algorithm for combinational logic scheduling and 3-color DFS for feedback cycle detection.
-* **Three-Valued Logic Engine:** Implemented IEEE 1164 ternary logic (`LOW`, `HIGH`, `UNDEFINED`) with CMOS dominant-state algebra.
-* **Electrical Connectivity Validation:** Designed connection guards enforcing single-driver net rules, self-loop rejection, and duplicate net prevention.
-* **Automated Testing & Benchmarking:** Developed the 13-test regression harness (`tests/test_gates.cpp`, `tests/test_circuits.cpp`) and performance benchmark (`tests/benchmark.cpp`).
-* **Critical Bug Fixes & RAII Refactoring:**
-  * Fixed recursive `delete this;` destructor crashes across all 4 entity classes.
-  * Resolved the unbounded `bools` vector accumulation leak in gate evaluation.
-  * Corrected connection serialization and restoration in `components.cpp`.
-  * Resolved compiler warnings under `-Wall -Wextra -O2`.
-* **Build Engineering & Portability:** Authored the multi-target `CMakeLists.txt`, modernized `Makefile`, and created `header_files/sfml_compat.hpp` for SFML 2.x/3.x interoperability.
-* **Documentation & Specifications:** Authored the comprehensive technical documentation and project context specifications.
+### Engineering Contributions
+* **Headless C++17 EDA Simulation Engine:** Architected and implemented the modular core engine in `engine/` (`Circuit`, `LogicGate`, `LogicValue`, `Pin`, `Wire`, `Serializer`), decoupling simulation logic from GUI rendering for headless execution and CI integration.
+* **Graph-Theoretic Levelization (Kahn's Algorithm):** Designed and implemented topological sorting over DAG circuit representations, ensuring all combinational dependencies settle deterministically in a single evaluation pass with zero frame latency.
+* **Three-Valued Logic System:** Modeled uninitialized and floating terminals with IEEE-style ternary logic (`LOW`, `HIGH`, `UNDEFINED`) and CMOS dominant-state algebra ($0 \cdot X = 0$, $1 + X = 1$).
+* **Electrical Connectivity Validation & DRC:** Implemented connection guards rejecting driver contention (multiple output pins driving one net), self-loops, and duplicate nets before wires are created.
+* **Directed Cycle Detection:** Built a 3-color Depth-First Search (DFS) algorithm identifying directed feedback loops, extracting exact cycle paths, and applying bounded relaxation to prevent infinite evaluation hangs.
+* **Automated Regression Test Suite:** Authored a standalone test framework and 13 unit/integration tests (`tests/test_gates.cpp`, `tests/test_circuits.cpp`) verifying gate truth tables, half/full adders, DRC validation, and netlist persistence with 13/13 passing in <1 ms.
+* **Performance Benchmarking:** Created a standalone benchmark suite (`tests/benchmark.cpp`) testing deep DAG chains (1,000 chained inverters) and multi-level arithmetic circuits (50 full adders).
+* **Memory Safety & RAII Refactoring:** Eliminated catastrophic undefined behavior (recursive `delete this;` in destructors of `Gate`, `Connection`, `InputSignal`, `OutputSignal`) and resolved unbounded heap allocations in the 60 FPS evaluation loop.
+* **Serialization & Netlist Format V2:** Designed a structured text netlist specification preserving complete component coordinates and net topological connections with 100% round-trip fidelity.
+* **Build Automation & Cross-Platform Compatibility:** Created the multi-target `CMakeLists.txt`, modernized the `Makefile`, and implemented `header_files/sfml_compat.hpp` bridging API breaking changes between SFML 2.x and SFML 3.x.
+* **Technical Documentation:** Authored comprehensive project documentation, architectural diagrams, and verified test reports.
 
 ---
 
-## Attribution & License
+## Acknowledgments & License
 
-* **Upstream Prototype Author:** [Binit Awasthi](https://github.com/binit-awasthi) — [digital-circuit-simulator](https://github.com/binit-awasthi/digital-circuit-simulator) (Original GUI prototype baseline).
-* **Modernization & Maintenance:** [Tanya Verma](https://github.com/tanyaverma20) — [Digital-Circuit-Simulator](https://github.com/tanyaverma20/Digital-Circuit-Simulator).
-* **Graphic Assets:** Logic gate icons created by [orvipixel - Flaticon](https://www.flaticon.com/free-icons/logic). Font: Hack font (SIL Open Font License).
-* **License:** This project is licensed under the [MIT License](LICENSE).
+* **Original Prototype Foundation:** Inherited initial 2D GUI prototype concepts and baseline layout from [Binit Awasthi](https://github.com/binit-awasthi)'s [digital-circuit-simulator](https://github.com/binit-awasthi/digital-circuit-simulator).
+* **Graphic & Font Assets:** Logic gate icons created by [orvipixel - Flaticon](https://www.flaticon.com/free-icons/logic). Hack font provided under the SIL Open Font License (OFL).
+* **License:** This project is licensed under the [MIT License](LICENSE) — preserving original copyright notices and licensing all modernization code under MIT.

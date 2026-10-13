@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-# Maintainer: Tanya Verma (https://github.com/tanyaverma20/Digital-Circuit-Simulator)
+# Author & Maintainer: Tanya Verma (https://github.com/tanyaverma20/Digital-Circuit-Simulator)
 project(DigitalCircuitSimulator
     VERSION 2.0.0
     DESCRIPTION "Digital Circuit Simulator — C++17 EDA Simulation Engine"
