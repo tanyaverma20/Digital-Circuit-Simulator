@@ -14,7 +14,7 @@ Port::Port()
 {
 
     port.setRadius(Port::portRadius);
-    port.setOrigin(port.getRadius(), port.getRadius());
+    compat::setOrigin(port, port.getRadius(), port.getRadius());
 
     colorFalse = sf::Color::White;
     colorTrue = sf::Color::Green;
@@ -25,8 +25,9 @@ Port::Port()
 
 void Port::setOrigin(float x, float y)
 {
-    port.setOrigin(x, y);
+    compat::setOrigin(port, x, y);
 }
+
 
 void Port::setState(bool state)
 {
@@ -95,8 +96,9 @@ void Port::hoverAction(sf::RenderWindow &window)
 
 bool Port::isClicked(sf::RenderWindow &window)
 {
-    return (isHovered(window) && sf::Mouse::isButtonPressed(sf::Mouse::Left));
+    return (isHovered(window) && sf::Mouse::isButtonPressed(SF_MOUSE_LEFT));
 }
+
 
 void Port::clickAction(sf::RenderWindow &window)
 {

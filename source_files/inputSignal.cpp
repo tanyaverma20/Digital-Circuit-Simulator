@@ -14,18 +14,17 @@ InputSignal::InputSignal(sf::Vector2f pos)
 
 InputSignal::~InputSignal()
 {
-    delete this;
 }
 
 void InputSignal::deleteConnections()
 {
-
     for (auto conIt = Connection::connections.begin(); conIt != Connection::connections.end();)
     {
         auto con = *conIt;
 
         if (con->op == this)
         {
+            delete con;
             conIt = Connection::connections.erase(conIt);
         }
         else
@@ -43,7 +42,6 @@ void InputSignal::deleteConnections()
 
 void InputSignal::removeAtPos(sf::Vector2f pos)
 {
-
     for (auto it = signals.begin(); it != signals.end();)
     {
         auto sig = *it;
@@ -51,6 +49,7 @@ void InputSignal::removeAtPos(sf::Vector2f pos)
         if (sig->contains(pos))
         {
             sig->deleteConnections();
+            delete sig;
             it = signals.erase(it);
             break;
         }
@@ -63,9 +62,11 @@ void InputSignal::removeAll()
     for (auto signal : signals)
     {
         signal->deleteConnections();
+        delete signal;
     }
     signals.clear();
 }
+
 
 void InputSignal::duplicate()
 {

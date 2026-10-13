@@ -1,6 +1,5 @@
-#pragma once
-
 #include "includes.hpp"
+#include "fontManager.hpp"
 
 class Button
 {

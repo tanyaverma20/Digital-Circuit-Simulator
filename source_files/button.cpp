@@ -2,8 +2,8 @@
 #include "../header_files/fontManager.hpp"
 
 Button::Button(std::string str, sf::Vector2f pos)
+    : label(FontManager::font)
 {
-
     btnText = str;
     padding = 20.f;
 
@@ -17,9 +17,12 @@ Button::Button(std::string str, sf::Vector2f pos)
 }
 
 Button::Button(float width, float height, sf::Vector2f pos)
+    : label(FontManager::font)
 {
     setSize(width, height);
+    setPosition(pos);
 }
+
 void Button::setPosition(sf::Vector2f pos)
 {
     this->pos = pos;
@@ -30,11 +33,13 @@ void Button::setPosition(sf::Vector2f pos)
 
 void Button::setSize()
 {
-    button.setSize(sf::Vector2f(label.getLocalBounds().width + padding, label.getLocalBounds().height + padding));
+    button.setSize(sf::Vector2f(compat::rectWidth(label.getLocalBounds()) + padding,
+                                compat::rectHeight(label.getLocalBounds()) + padding));
 
-    label.setOrigin(label.getLocalBounds().width / 2, label.getLocalBounds().height / 2);
-    button.setOrigin(button.getLocalBounds().width / 2, button.getLocalBounds().height / 2);
+    compat::setOrigin(label, compat::rectWidth(label.getLocalBounds()) / 2, compat::rectHeight(label.getLocalBounds()) / 2);
+    compat::setOrigin(button, compat::rectWidth(button.getLocalBounds()) / 2, compat::rectHeight(button.getLocalBounds()) / 2);
 }
+
 
 void Button::setSize(float width, float height)
 {
@@ -96,9 +101,10 @@ bool Button::isHovered(sf::RenderWindow &window)
 
 void Button::setScale(float scaleX, float scaleY)
 {
-    button.setScale(scaleX, scaleY);
-    label.setScale(scaleX, scaleY);
+    compat::setScale(button, scaleX, scaleY);
+    compat::setScale(label, scaleX, scaleY);
 }
+
 
 sf::Color Button::getBgColor()
 {

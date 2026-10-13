@@ -1,6 +1,7 @@
 #include "../header_files/statusBar.hpp"
 
 StatusBar::StatusBar(sf::Font &font)
+    : status(font)
 {
     this->font = font;
     text = " ";
@@ -15,8 +16,9 @@ StatusBar::StatusBar(sf::Font &font)
 
     status.setString("gates: 0");
 
-    status.setPosition(100.f, 100.f);
+    compat::setPosition(status, 100.f, 100.f);
 }
+
 
 void StatusBar::setFont(sf::Font font)
 {

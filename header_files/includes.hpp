@@ -12,4 +12,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 
+#include "sfml_compat.hpp"
+
 #endif

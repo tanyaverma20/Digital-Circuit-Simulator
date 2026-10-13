@@ -13,28 +13,30 @@ OutputSignal::OutputSignal(sf::Vector2f pos)
 
 OutputSignal::~OutputSignal()
 {
-    delete this;
 }
 
 void OutputSignal::deleteConnections()
 {
-
     for (auto conIt = Connection::connections.begin(); conIt != Connection::connections.end();)
     {
         auto con = *conIt;
 
         if (con->ip == this)
         {
-            for (auto it = parentPort->childPorts.begin(); it != parentPort->childPorts.end();)
+            if (parentPort)
             {
-                auto port = *it;
-                if (port == this)
+                for (auto it = parentPort->childPorts.begin(); it != parentPort->childPorts.end();)
                 {
-                    it = parentPort->childPorts.erase(it);
-                    break;
+                    auto port = *it;
+                    if (port == this)
+                    {
+                        it = parentPort->childPorts.erase(it);
+                        break;
+                    }
+                    ++it;
                 }
-                ++it;
             }
+            delete con;
             conIt = Connection::connections.erase(conIt);
             //
             this->isConnected = false;
@@ -47,7 +49,6 @@ void OutputSignal::deleteConnections()
 
 void OutputSignal::removeAtPos(sf::Vector2f pos)
 {
-
     for (auto it = signals.begin(); it != signals.end();)
     {
         auto sig = *it;
@@ -55,6 +56,7 @@ void OutputSignal::removeAtPos(sf::Vector2f pos)
         if (sig->contains(pos))
         {
             sig->deleteConnections();
+            delete sig;
             it = signals.erase(it);
             break;
         }
@@ -67,9 +69,11 @@ void OutputSignal::removeAll()
     for (auto signal : signals)
     {
         signal->deleteConnections();
+        delete signal;
     }
     signals.clear();
 }
+
 
 void OutputSignal::duplicate()
 {

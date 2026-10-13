@@ -20,8 +20,6 @@ void Connection::connect()
 
 Connection::~Connection()
 {
-    std::cout << "deleted connection at " << this << std::endl;
-    delete this;
 }
 
 void Connection::drawConnection()
@@ -35,9 +33,11 @@ void Connection::drawConnection()
     connection.setPosition(startPos);
     connection.setSize(sf::Vector2f(mag, 3.f));
     sf::FloatRect bounds = connection.getLocalBounds();
-    connection.setOrigin(0, bounds.height / 2);
-    connection.setRotation(angle);
+    compat::setOrigin(connection, 0, compat::rectHeight(bounds) / 2);
+    compat::setRotationDegrees(connection, angle);
 }
+
+
 
 void Connection::drawTo(sf::RenderWindow &window)
 {

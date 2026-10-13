@@ -1,1 +1,10 @@
 .vscode/
+build/
+bin/
+*.exe
+*.o
+*.a
+simulator
+run_tests
+history.txt
+.DS_Store

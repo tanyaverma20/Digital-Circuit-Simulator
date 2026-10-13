@@ -12,6 +12,7 @@ std::vector<Gate *> Gate::gates;
 int Gate::count;
 
 Gate::Gate(std::string type, sf::Vector2f pos)
+    : label(FontManager::font)
 {
     width = 100.f;
     height = 50.f;
@@ -28,14 +29,15 @@ Gate::Gate(std::string type, sf::Vector2f pos)
     setSize(width, height);
     setText(type);
 
-    gate.setOrigin(gate.getLocalBounds().width / 2, gate.getLocalBounds().height / 2);
-    label.setOrigin(label.getLocalBounds().width / 2, label.getLocalBounds().height / 2);
+    compat::setOrigin(gate, compat::rectWidth(gate.getLocalBounds()) / 2, compat::rectHeight(gate.getLocalBounds()) / 2);
+    compat::setOrigin(label, compat::rectWidth(label.getLocalBounds()) / 2, compat::rectHeight(label.getLocalBounds()) / 2);
 
     setPosition(pos);
 
     setBgColor(bgColor);
     setTextColor(textColor);
 }
+
 
 void Gate::setGate()
 {
@@ -150,8 +152,8 @@ void Gate::setPadding(float padding)
 
 void Gate::setScale(float scaleX, float scaleY)
 {
-    gate.setScale(scaleX, scaleY);
-    label.setScale(scaleX, scaleY);
+    compat::setScale(gate, scaleX, scaleY);
+    compat::setScale(label, scaleX, scaleY);
 }
 
 sf::Color Gate::getBgColor()
@@ -189,7 +191,7 @@ bool Gate::isClicked(sf::RenderWindow &window)
     if (!isHovered(window))
         return false;
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (sf::Mouse::isButtonPressed(SF_MOUSE_LEFT))
         return true;
 
     return false;
@@ -197,11 +199,14 @@ bool Gate::isClicked(sf::RenderWindow &window)
 
 void Gate::clickAction(sf::RenderWindow &window)
 {
+    (void)window;
     logicOperation();
 }
 
+
 void Gate::logicOperation()
 {
+    bools.clear();
     boolCount = 0;
     for (auto &port : iPorts)
     {
@@ -212,38 +217,42 @@ void Gate::logicOperation()
         }
     }
 
-    if (boolCount == 1 && type == LOGIC_NOT)
+    if (boolCount >= 1 && type == LOGIC_NOT)
     {
         oPort.setState(logicNot());
+        bools.clear();
+        return;
+    }
+    else if (type == LOGIC_NOT)
+    {
+        oPort.setState(false);
+        bools.clear();
         return;
     }
 
-    else if (boolCount < 2)
+    if (boolCount < 2)
     {
         oPort.setState(false);
+        bools.clear();
         return;
     }
 
     if (type == LOGIC_AND)
         oPort.setState(logicAnd());
-
     else if (type == LOGIC_OR)
         oPort.setState(logicOr());
-
     else if (type == LOGIC_XOR)
         oPort.setState(logicXor());
-
     else if (type == LOGIC_XNOR)
         oPort.setState(logicXnor());
-
     else if (type == LOGIC_NOR)
         oPort.setState(logicNor());
-
     else if (type == LOGIC_NAND)
         oPort.setState(logicNand());
 
     bools.clear();
 }
+
 
 void Gate::gateClickAction(sf::RenderWindow &window)
 {
@@ -358,11 +367,7 @@ void Gate::addGate(std::string type, sf::Vector2f pos)
 
 Gate::~Gate()
 {
-    delete this;
     count--;
-    std::cout << "deleted: gate" << std::endl
-              << "gate count: " << Gate::getCount() << std::endl
-              << std::endl;
 }
 
 int Gate::getCount()
@@ -376,6 +381,7 @@ void Gate::removeGate(Gate *gateToRemove)
     {
         if (*gateIt == gateToRemove)
         {
+            delete *gateIt;
             gateIt = gates.erase(gateIt);
             break;
         }
@@ -388,15 +394,14 @@ void Gate::removeGate(Gate *gateToRemove)
 
 void Gate::removeAtPos(sf::Vector2f pos)
 {
-
     for (auto gateIt = gates.begin(); gateIt != gates.end();)
     {
-
         auto gate = *gateIt;
 
         if (gate->contains(pos))
         {
             gate->deleteConnections();
+            delete gate;
             gateIt = gates.erase(gateIt);
             break;
         }
@@ -409,9 +414,9 @@ void Gate::removeAll()
     for (Gate *gate : gates)
     {
         gate->deleteConnections();
+        delete gate;
     }
     gates.clear();
-    std::cout << "all gates deleted successfully and cleared" << std::endl;
 }
 
 void Gate::clearState()
@@ -431,6 +436,7 @@ void Gate::deleteConnections()
         auto con = *conIt;
         if (con->op == &this->oPort)
         {
+            delete con;
             conIt = Connection::connections.erase(conIt);
         }
         else
@@ -448,8 +454,8 @@ void Gate::deleteConnections()
             if (con->ip == &port)
             {
                 found = true;
+                delete con;
                 conIt = Connection::connections.erase(conIt);
-                std::cout << "deleted: connection" << std::endl;
                 port.isConnected = false;
                 port.parentPort = nullptr;
                 port.setState(false);
@@ -473,6 +479,7 @@ void Gate::deleteConnections()
 
     this->oPort.childPorts.clear();
 }
+
 
 void Gate::duplicate(sf::Vector2f pos)
 {
