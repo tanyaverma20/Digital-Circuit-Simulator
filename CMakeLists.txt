@@ -52,6 +52,11 @@ target_include_directories(circuit_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_test(NAME CircuitEngineTests COMMAND circuit_tests)
 
+add_executable(circuit_benchmark tests/benchmark.cpp)
+target_link_libraries(circuit_benchmark PRIVATE circuit_engine)
+target_include_directories(circuit_benchmark PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+
 # ==========================================
 # 3. GUI Simulator (SFML Frontend)
 # ==========================================
