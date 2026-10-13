@@ -5,7 +5,9 @@
 ## 1. Project Overview
 
 ### Project Name
-**Digital Circuit Simulator (EDA Simulation Engine & Interactive GUI)**
+**Digital Circuit Simulator — C++17 EDA Simulation Engine**  
+**Maintainer & Modernization Author:** Tanya Verma (https://github.com/tanyaverma20/Digital-Circuit-Simulator)  
+**Upstream Prototype Baseline:** Binit Awasthi (https://github.com/binit-awasthi/digital-circuit-simulator)
 
 ### One-Sentence Explanation
 A modern C++17 digital logic simulation platform featuring a headless, zero-dependency Electronic Design Automation (EDA) engine with Kahn's topological DAG sorting and three-valued logic evaluation, coupled with an interactive desktop graphical interface powered by SFML.

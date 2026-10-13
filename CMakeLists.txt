@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
-project(DigitalCircuitSimulator VERSION 2.0.0 LANGUAGES CXX)
+# Maintainer: Tanya Verma (https://github.com/tanyaverma20/Digital-Circuit-Simulator)
+project(DigitalCircuitSimulator
+    VERSION 2.0.0
+    DESCRIPTION "Digital Circuit Simulator — C++17 EDA Simulation Engine"
+    HOMEPAGE_URL "https://github.com/tanyaverma20/Digital-Circuit-Simulator"
+    LANGUAGES CXX
+)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
